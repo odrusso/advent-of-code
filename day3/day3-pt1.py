@@ -18,11 +18,6 @@ while y < len(linesIn):
     lineList[x % lineLen] = "X"
     linesIn[y] = "".join(lineList)
 
-    if y > 320:
-        print("="*200)
-        print("\n".join(linesIn))
-        print("="*200)
-
     x += 3
     y += 1
 
