@@ -60,28 +60,24 @@ def populate_grid(grid, lines):
 
 
 def get_all_points_for_line(line: Line):
-    if line.start.x == line.end.x:
+    start, end = sorted([line.start, line.end], key=lambda a: a.x)
+    if start.x == end.x:
         # vert line
-        y0, y1 = sorted([line.start.y, line.end.y])
-        return [Coordinate(line.start.x, _) for _ in range(y0, y1 + 1)]
+        y0, y1 = sorted([start.y, end.y])
+        return [Coordinate(start.x, _) for _ in range(y0, y1 + 1)]
 
-    elif line.start.y == line.end.y:
+    elif start.y == end.y:
         # horiz line
-        x0, x1 = sorted([line.start.x, line.end.x])
-        return [Coordinate(_, line.start.y) for _ in range(x0, x1 + 1)]
+        return [Coordinate(_, start.y) for _ in range(start.x, end.x + 1)]
 
-    elif line.start.y > line.end.y:
-        # slope-up
-        x0, x1 = sorted([line.start.x, line.end.x])
-        y0, y1 = sorted([line.start.y, line.end.y])
-        points = [Coordinate(x0 + step, y0 + step) for step in range(x1 - x0 + 1)]
+    elif start.y > end.y:
+        # slope-down
+        points = [Coordinate(start.x + step, start.y - step) for step in range(end.x - start.x + 1)]
         return points
 
-    elif line.start.y < line.end.y:
-        # slope-down
-        x0, x1 = sorted([line.start.x, line.end.x])
-        y1, y0 = sorted([line.start.y, line.end.y])
-        points = [Coordinate(x0 + step, y0 - step) for step in range(x1 - x0 + 1)]
+    elif start.y < end.y:
+        # slope-up
+        points = [Coordinate(start.x + step, start.y + step) for step in range(end.x - start.x + 1)]
         return points
 
     else:
@@ -101,3 +97,5 @@ if __name__ == "__main__":
     day5_2()
 
 # guess 1: 20177; too high
+# guess 2: 19576; too high
+# guess 3: 19164;
