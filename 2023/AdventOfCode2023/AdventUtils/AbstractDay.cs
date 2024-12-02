@@ -1,8 +1,11 @@
+using BenchmarkDotNet.Attributes;
+
 namespace AdventUtils;
 
+[MemoryDiagnoser]
 public abstract class AbstractDay
 {
-    private string[] GetLines() => File.ReadAllLines($"../../../{GetType().Name}/input.txt");
+    protected abstract string[] GetLines();
 
     protected abstract object ProcessPartOne(string[] input);
 
@@ -16,5 +19,17 @@ public abstract class AbstractDay
     public void RunPartTwo()
     {
         Console.WriteLine(ProcessPartTwo(GetLines()).ToString());
+    }
+    
+    [Benchmark]
+    public void BenchmarkPartOne()
+    {
+        ProcessPartOne(GetLines());
+    }
+
+    [Benchmark]
+    public void BenchmarkPartTwo()
+    {
+        ProcessPartTwo(GetLines());
     }
 }

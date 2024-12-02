@@ -1,8 +1,11 @@
 ﻿using AdventOfCode2024.Day1;
+using AdventOfCode2024.Day2;
 using AdventUtils;
+using BenchmarkDotNet.Running;
 
 var days = new Dictionary<string, AbstractDay>();
 days.Add("1", new Day1());
+days.Add("2", new Day2());
 
 Console.WriteLine("Enter day numbers from these options: ");
 Console.WriteLine(string.Join(", ", days.Keys));
@@ -18,3 +21,5 @@ switch (partSelection)
     case "1": dayToRun.RunPartOne(); break;
     case "2": dayToRun.RunPartTwo(); break;
 }
+
+// BenchmarkRunner.Run<Day2>();
