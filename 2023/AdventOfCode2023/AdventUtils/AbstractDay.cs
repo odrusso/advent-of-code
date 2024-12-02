@@ -1,4 +1,4 @@
-namespace AdventOfCode2023.Utils;
+namespace AdventUtils;
 
 public abstract class AbstractDay
 {

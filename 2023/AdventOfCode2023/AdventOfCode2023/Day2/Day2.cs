@@ -1,5 +1,5 @@
 using System.Text.RegularExpressions;
-using AdventOfCode2023.Utils;
+using AdventUtils;
 using static System.Int32;
 
 namespace AdventOfCode2023.Day2;

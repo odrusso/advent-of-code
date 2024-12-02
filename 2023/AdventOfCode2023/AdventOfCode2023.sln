@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode2023", "AdventOfCode2023\AdventOfCode2023.csproj", "{ECDC2DAC-0880-42B1-9256-EFE1F09C20C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode2024", "AdventOfCode2024\AdventOfCode2024.csproj", "{1A70A948-90CE-426D-8808-859E9F9C4145}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventUtils", "AdventUtils\AdventUtils.csproj", "{94020027-B3C6-41B8-ACC3-63B92A956F9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{ECDC2DAC-0880-42B1-9256-EFE1F09C20C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECDC2DAC-0880-42B1-9256-EFE1F09C20C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECDC2DAC-0880-42B1-9256-EFE1F09C20C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A70A948-90CE-426D-8808-859E9F9C4145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A70A948-90CE-426D-8808-859E9F9C4145}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A70A948-90CE-426D-8808-859E9F9C4145}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A70A948-90CE-426D-8808-859E9F9C4145}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94020027-B3C6-41B8-ACC3-63B92A956F9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94020027-B3C6-41B8-ACC3-63B92A956F9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94020027-B3C6-41B8-ACC3-63B92A956F9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94020027-B3C6-41B8-ACC3-63B92A956F9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
