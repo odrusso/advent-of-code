@@ -3,6 +3,7 @@ using AdventOfCode2024.Day2;
 using AdventOfCode2024.Day3;
 using AdventOfCode2024.Day4;
 using AdventOfCode2024.Day5;
+using AdventOfCode2024.Day6;
 using AdventUtils;
 using BenchmarkDotNet.Running;
 
@@ -12,6 +13,7 @@ days.Add("2", new Day2());
 days.Add("3", new Day3());
 days.Add("4", new Day4());
 days.Add("5", new Day5());
+days.Add("6", new Day6());
 
 Console.WriteLine("Enter day numbers from these options: ");
 Console.WriteLine(string.Join(", ", days.Keys));
