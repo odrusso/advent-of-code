@@ -2,7 +2,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace AdventUtils;
 
-[MemoryDiagnoser]
+// [MemoryDiagnoser]
 public abstract class AbstractDay
 {
     protected abstract string[] GetLines();
@@ -22,14 +22,8 @@ public abstract class AbstractDay
     }
     
     [Benchmark]
-    public void BenchmarkPartOne()
-    {
-        ProcessPartOne(GetLines());
-    }
+    public void BenchmarkPartOne() => ProcessPartOne(GetLines());
 
     [Benchmark]
-    public void BenchmarkPartTwo()
-    {
-        ProcessPartTwo(GetLines());
-    }
+    public void BenchmarkPartTwo() => ProcessPartTwo(GetLines());
 }

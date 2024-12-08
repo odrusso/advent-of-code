@@ -8,6 +8,7 @@ public class Day7 : AbstractDay
         File.ReadAllLines(
             $"/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day7/input.txt");
 
+    // 2501605301465
     protected override object ProcessPartOne(string[] input)
     {
         var parsedLines = ParseLines(input);
@@ -17,6 +18,7 @@ public class Day7 : AbstractDay
         return calculableLines.Sum(line => line.result);
     }
 
+    // 44841372855953
     protected override object ProcessPartTwo(string[] input)
     {
         var parsedLines = ParseLines(input);
@@ -29,20 +31,34 @@ public class Day7 : AbstractDay
     private static bool RecurseCalculate(long lineResult, long[] ops)
     {
         if (ops.Length == 1) return lineResult == ops[0];
+        if (lineResult < 0) return false;
 
-        return
-            RecurseCalculate(lineResult, [ops[0] + ops[1], ..ops[2..]]) || // Addition branch
-            RecurseCalculate(lineResult, [ops[0] * ops[1], ..ops[2..]]); // Multiplication branch
+        if (lineResult % ops[^1] == 0)
+            return
+                RecurseCalculate(lineResult - ops[^1], ops[..^1]) || // Subtraction branch
+                RecurseCalculate(lineResult / ops[^1], ops[..^1]); // Multiplication branch
+
+        return RecurseCalculate(lineResult - ops[^1], ops[..^1]);
     }
 
     private static bool RecurseCalculateWithConcat(long lineResult, long[] ops)
     {
         if (ops.Length == 1) return lineResult == ops[0];
+        if (lineResult < 0) return false;
 
-        return
-            RecurseCalculateWithConcat(lineResult, [ops[0] + ops[1], ..ops[2..]]) || // Addition branch
-            RecurseCalculateWithConcat(lineResult, [ops[0] * ops[1], ..ops[2..]]) || // Multiplication branch
-            RecurseCalculateWithConcat(lineResult, [Concat(ops[0], ops[1]), ..ops[2..]]); // Concat branch
+        var valid = false;
+        var lastOp = ops[^1];
+
+        if (lineResult % lastOp == 0)
+            valid = valid || RecurseCalculateWithConcat(lineResult / lastOp, ops[..^1]); // Multiplication branch
+
+        var lrs = lineResult.ToString();
+        var fops = lastOp.ToString();
+
+        if (lrs.EndsWith(fops) && lrs.Length > fops.Length)
+            valid = valid || RecurseCalculateWithConcat(long.Parse(lrs[..^fops.Length]), ops[..^1]); // Concat branch
+
+        return valid || RecurseCalculateWithConcat(lineResult - lastOp, ops[..^1]); // Addition branch
     }
 
     private static (long result, long[] operands)[] ParseLines(string[] lines) =>
@@ -54,10 +70,4 @@ public class Day7 : AbstractDay
 
             return (result, operands);
         }).ToArray();
-
-    private static long Concat(long a, long b)
-    {
-        int exp = (int)Math.Ceiling(Math.Log10(b));
-        return a * (long)Math.Pow(10, exp) + b;
-    }
 }
