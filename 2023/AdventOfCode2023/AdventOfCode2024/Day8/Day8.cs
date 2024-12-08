@@ -1,70 +1,111 @@
+using System.Numerics;
 using AdventUtils;
 
-namespace AdventOfCode2024.Day7;
+namespace AdventOfCode2024.Day8;
 
-public class Day7 : AbstractDay
+public class Day8 : AbstractDay
 {
     protected override string[] GetLines() =>
         File.ReadAllLines(
-            $"/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day7/input.txt");
+            $"/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day8/input.txt");
 
-    // 2501605301465
     protected override object ProcessPartOne(string[] input)
     {
-        var parsedLines = ParseLines(input);
+        HashSet<Vector<int>> antinodes = [];
 
-        var calculableLines = parsedLines.Where(line => RecurseCalculate(line.result, line.operands));
+        var antennas = ParseBoard(input);
 
-        return calculableLines.Sum(line => line.result);
+        foreach (var positions in antennas.Values)
+        {
+            var positionPairs =
+                from position1 in positions
+                from position2 in positions
+                where position1 != position2
+                select new { PositionOne = position1, PositionTwo = position2 };
+
+            foreach (var pos in positionPairs)
+            {
+                var positionDelta = pos.PositionTwo - pos.PositionOne;
+                var negativePositionDelta = Vector<int>.Zero - positionDelta;
+                var antinodePosition = pos.PositionOne + negativePositionDelta;
+
+                antinodes.Add(antinodePosition);
+            }
+        }
+
+        var filteredAntinodes = FilterAntinodes(input, antinodes);
+
+        return filteredAntinodes.Count();
     }
 
-    // 44841372855953
     protected override object ProcessPartTwo(string[] input)
     {
-        var parsedLines = ParseLines(input);
+        HashSet<Vector<int>> antinodes = [];
 
-        var calculableLines = parsedLines.Where(line => RecurseCalculateWithConcat(line.result, line.operands));
+        var antennas = ParseBoard(input);
 
-        return calculableLines.Sum(line => line.result);
-    }
-
-    private static bool RecurseCalculate(long lineResult, long[] ops)
-    {
-        if (ops.Length == 1) return lineResult == ops[0];
-        if (lineResult < 0) return false;
-        
-        if (lineResult % ops[^1] == 0) return
-            RecurseCalculate(lineResult - ops[^1], ops[..^1]) || // Subtraction branch
-            RecurseCalculate(lineResult / ops[^1], ops[..^1]); // Multiplication branch
-
-        return RecurseCalculate(lineResult - ops[^1], ops[..^1]);
-    }
-
-    private static bool RecurseCalculateWithConcat(long lineResult, long[] ops)
-    {
-        if (ops.Length == 1) return lineResult == ops[0];
-        if (lineResult < 0) return false;
-
-        var valid = false;
-
-        if (lineResult % ops[^1] == 0)
-            valid = valid || RecurseCalculate(lineResult / ops[^1], ops[..^1]); // Multiplication branch
-
-        if (lineResult.ToString().EndsWith(ops[^1].ToString()))
-            valid = valid || RecurseCalculate(long.Parse(lineResult.ToString()[..^ops[^1].ToString().Length]), ops[..^1]); // Concat branch
-        
-        return valid || RecurseCalculate(lineResult - ops[^1], ops[..^1]); // Addition branch
-    }
-
-    private static (long result, long[] operands)[] ParseLines(string[] lines) =>
-        lines.Select(arg =>
+        foreach (var positions in antennas.Values)
         {
-            var splits = arg.Split(": ");
-            var result = long.Parse(splits[0]);
-            var operands = splits[1].Split(" ").Select(long.Parse).ToArray();
+            var positionPairs =
+                from position1 in positions
+                from position2 in positions
+                where position1 != position2
+                select new { PositionOne = position1, PositionTwo = position2 };
 
-            return (result, operands);
-        }).ToArray();
+            foreach (var pos in positionPairs)
+            {
+                var positionDelta = pos.PositionTwo - pos.PositionOne;
 
-    private static long Concat(long a, long b) => long.Parse($"{a}{b}");
+                for (var i = 1; i < 50 / Min(positionDelta); i++)
+                {
+                    antinodes.Add(pos.PositionOne + i * positionDelta);
+                }
+            }
+        }
+
+        var filteredAntinodes = FilterAntinodes(input, antinodes);
+
+        return filteredAntinodes.Count();
+    }
+
+    private static IEnumerable<Vector<int>> FilterAntinodes(string[] input, HashSet<Vector<int>> antinodes)
+    {
+        var filteredAntinodes = antinodes.Where(node =>
+        {
+            if (node[0] < 0) return false;
+            if (node[1] < 0) return false;
+
+            if (node[1] >= input.First().Length) return false;
+            if (node[0] >= input.Length) return false;
+
+            return true;
+        });
+        return filteredAntinodes;
+    }
+
+    private static Dictionary<char, Vector<int>[]> ParseBoard(string[] input)
+    {
+        Dictionary<char, Vector<int>[]> antennas = [];
+        for (int y = 0; y < input.Length; y++)
+        {
+            for (int x = 0; x < input[y].Length; x++)
+            {
+                var c = input[y][x];
+                if (c == '.') continue;
+
+                if (antennas.ContainsKey(c))
+                {
+                    antennas[c] = [..antennas[c], new Vector<int>([y, x, 0, 0])];
+                }
+                else
+                {
+                    antennas[c] = [new Vector<int>([y, x, 0, 0])];
+                }
+            }
+        }
+
+        return antennas;
+    }
+
+    private static int Min(Vector<int> p) => Math.Min(Math.Abs(p[0]), Math.Abs(p[1]));
 }
