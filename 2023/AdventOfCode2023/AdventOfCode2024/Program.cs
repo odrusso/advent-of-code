@@ -1,4 +1,5 @@
 ﻿using AdventOfCode2024.Day1;
+using AdventOfCode2024.Day10;
 using AdventOfCode2024.Day2;
 using AdventOfCode2024.Day3;
 using AdventOfCode2024.Day4;
@@ -22,6 +23,7 @@ days.Add("6", new Day6());
 days.Add("7", new Day7());
 days.Add("8", new Day8());
 days.Add("9", new Day9());
+days.Add("10", new Day10());
 
 Console.WriteLine("Enter day numbers from these options: ");
 Console.WriteLine(string.Join(", ", days.Keys));
