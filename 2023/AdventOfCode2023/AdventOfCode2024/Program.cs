@@ -3,6 +3,7 @@ using AdventOfCode2024.Day10;
 using AdventOfCode2024.Day11;
 using AdventOfCode2024.Day12;
 using AdventOfCode2024.Day13;
+using AdventOfCode2024.Day14;
 using AdventOfCode2024.Day2;
 using AdventOfCode2024.Day3;
 using AdventOfCode2024.Day4;
@@ -30,6 +31,7 @@ days.Add("10", new Day10());
 days.Add("11", new Day11());
 days.Add("12", new Day12());
 days.Add("13", new Day13());
+days.Add("14", new Day14());
 
 Console.WriteLine("Enter day numbers from these options: ");
 Console.WriteLine(string.Join(", ", days.Keys));
@@ -46,6 +48,6 @@ switch (partSelection)
     case "2": dayToRun.RunPartTwo(); break;
 }
 
-// BenchmarkRunner.Run<Day13>(ManualConfig
+// BenchmarkRunner.Run<Day14>(ManualConfig
 //     .Create(DefaultConfig.Instance)
 //     .AddDiagnoser(MemoryDiagnoser.Default));
