@@ -46,6 +46,6 @@ switch (partSelection)
     case "2": dayToRun.RunPartTwo(); break;
 }
 
-// BenchmarkRunner.Run<Day9>(ManualConfig
+// BenchmarkRunner.Run<Day13>(ManualConfig
 //     .Create(DefaultConfig.Instance)
 //     .AddDiagnoser(MemoryDiagnoser.Default));

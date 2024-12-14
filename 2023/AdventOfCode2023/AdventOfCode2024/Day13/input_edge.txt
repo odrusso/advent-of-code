@@ -1,0 +1,7 @@
+Button A: X+10, Y+10
+Button B: X+30, Y+30
+Puzzle: X=60, Y=60
+
+Button A: X+10, Y+10
+Button B: X+30, Y+30
+Puzzle: X=60, Y=120

@@ -61,19 +61,21 @@ public class Day13 : AbstractDay
 
     private static long GetPoints(Button buttonA, Button buttonB, Button prize)
     {
-        decimal y = ((decimal) - buttonA.Y * prize.X + buttonA.X * prize.Y) /
-                    (buttonA.X * buttonB.Y - buttonA.Y * buttonB.X);
+        long yNum = buttonA.X * prize.Y - buttonA.Y * prize.X;
+        long yDenom = buttonA.X * buttonB.Y - buttonA.Y * buttonB.X;
+        
+        if (yNum > 0 && yDenom < 0 || yNum < 0 && yDenom > 0) return 0; // Will result in -nve solution if they have opposite signs
+        if (yNum % yDenom != 0) return 0; // Not divisible, would result in decimal solution
 
-        if (y < 0) return 0; // Unsolvable, out of +ve range
-        if (y % 1 != 0) return 0; // Unsolvable, Y isn't an integer
+        long y = yNum / yDenom;
+        
+        long xNum = prize.X - y * buttonB.X;
+        
+        if (xNum < 0) return 0; // We know denom is always +ve, so if numerator is -nve, this will be -ve
+        if (xNum % buttonA.X != 0) return 0; // Not an integer solution
+        
+        long x = xNum / buttonA.X;
 
-        decimal x = (prize.X - y * buttonB.X) / buttonA.X;
-
-        if (x < 0) return 0; // Unsolvable, out of +ve range
-        if (x % 1 != 0) return 0; // Unsolvable, Y isn't an integer
-
-        // Both points are integers and in range, it's the solution
-
-        return (long)(x * 3 + y);
+        return x * 3 + y;
     }
 }
