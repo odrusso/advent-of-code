@@ -43,41 +43,58 @@ public class Day14 : AbstractDay
     protected override object ProcessPartTwo(string[] input)
     {
         Robot[] robots = ParseInput(input);
-        var i = 6390;
 
-        while (true)
+        Dictionary<int, int> energyMap = [];
+
+        for (int i = 0; i < (XMaxIndex + 1) * (YMaxIndex + 1); i++)
         {
-            i++;
             List<Robot> movedRobots = [];
-
             foreach (Robot robot in robots)
             {
                 movedRobots.Add(RobotAfter(robot, i));
             }
 
-            var grid = Enumerable.Range(0, YMaxIndex + 1).Select(_ => Enumerable.Repeat(' ', XMaxIndex + 1).ToArray())
-                .ToArray();
-
-            foreach (var robot1 in movedRobots.ToArray())
-            {
-                grid[robot1.Y][robot1.X] = '\u2588';
-            }
-
-            foreach (var row in grid)
-            {
-                if (string.Join("", row).Contains(PartTwoTarget))
-                {
-                    return i;
-                }
-            }
-
-            // Console.Clear();
-            // Console.WriteLine(string.Join("\n", grid.Select(a => string.Join("", a))));
-            // Console.WriteLine(i);
-            // Console.ReadLine();
-            // 
-            // if some tree condition, exit.
+            int energy = GetEnergy(movedRobots.ToArray());
+            energyMap[i] = energy;
         }
+
+        // Return the most energetic index
+        return energyMap.OrderByDescending(kvp => kvp.Value).First().Key;
+    }
+
+    private int GetEnergy(Robot[] robots)
+    {
+        var energy = 0;
+
+        var grid = Enumerable.Range(0, YMaxIndex + 1).Select(_ => Enumerable.Repeat(false, XMaxIndex + 1).ToArray())
+            .ToArray();
+
+        foreach (var robot in robots.ToArray())
+        {
+            grid[robot.Y][robot.X] = true;
+        }
+
+        for (int y = 1; y < YMaxIndex - 1; y++)
+        {
+            for (int x = 1; x < XMaxIndex - 1; x++)
+            {
+                if (!grid[y][x]) continue;
+
+                // Check all 8 position around the current pixel, add 1 to energy for value that's true
+                if (grid[y - 1][x - 1]) energy++;
+                if (grid[y - 1][x]) energy++;
+                if (grid[y - 1][x + 1]) energy++;
+
+                if (grid[y][x - 1]) energy++;
+                if (grid[y][x + 1]) energy++;
+
+                if (grid[y + 1][x - 1]) energy++;
+                if (grid[y + 1][x]) energy++;
+                if (grid[y + 1][x + 1]) energy++;
+            }
+        }
+
+        return energy;
     }
 
     private static Robot[] ParseInput(string[] input)
