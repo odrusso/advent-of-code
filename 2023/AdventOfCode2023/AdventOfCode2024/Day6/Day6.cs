@@ -34,7 +34,7 @@ public class Day6 : AbstractDay
             $"/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day6/input.txt");
 
     // 4883
-    protected override object ProcessPartOne(string[] input)
+    public override object ProcessPartOne(string[] input)
     {
         var (map, state) = GetInitialGuardState(input);
 
@@ -50,7 +50,7 @@ public class Day6 : AbstractDay
 
     // 1656 TOO HIGH
     // 1655 i s2g
-    protected override object ProcessPartTwo(string[] input)
+    public override object ProcessPartTwo(string[] input)
     {
         var (map, state) = GetInitialGuardState(input);
 

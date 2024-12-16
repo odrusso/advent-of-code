@@ -10,7 +10,7 @@ public class Day2 : AbstractDay
     private const int MaxGreen = 13;
     private const int MaxBlue = 14;
 
-    protected override object ProcessPartOne(string[] input) =>
+    public override object ProcessPartOne(string[] input) =>
         input.Sum(line =>
         {
             var game = ParseLine(line);
@@ -26,7 +26,7 @@ public class Day2 : AbstractDay
             return gameValid ? game.Id : 0;
         });
 
-    protected override object ProcessPartTwo(string[] input) =>
+    public override object ProcessPartTwo(string[] input) =>
         input.Sum(line =>
         {
             var game = ParseLine(line);

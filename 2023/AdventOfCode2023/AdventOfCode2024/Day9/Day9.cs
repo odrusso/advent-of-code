@@ -14,7 +14,7 @@ public class Day9 : AbstractDay
         File.ReadAllLines(
             $"/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day9/input.txt");
 
-    protected override object ProcessPartOne(string[] input)
+    public override object ProcessPartOne(string[] input)
     {
         var disk = input.Single();
 
@@ -60,7 +60,7 @@ public class Day9 : AbstractDay
         return tidyDisk.Select((id, pos) => new { Id = (long)id, Pos = (long)pos }).Sum(v => v.Pos * v.Id);
     }
 
-    protected override object ProcessPartTwo(string[] input)
+    public override object ProcessPartTwo(string[] input)
     {
         var diskIn = input.Single();
         var disk = diskIn.Select((v, i) => new Block(i % 2 == 0 ? i / 2 : -1, int.Parse(v.ToString()))).ToList();

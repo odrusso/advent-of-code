@@ -11,11 +11,11 @@ public class Day2 : AbstractDay
     private const int MaxDelta = 3;
     private const int MinDelta = 1;
 
-    protected override object ProcessPartOne(string[] input) => input
+    public override object ProcessPartOne(string[] input) => input
         .Select(ParseReports)
         .Count(LevelsSafe);
 
-    protected override object ProcessPartTwo(string[] input) => input
+    public override object ProcessPartTwo(string[] input) => input
         .Select(ParseReports)
         .Select(GeneratePermutations)
         .Count(perm => perm.Any(LevelsSafe));

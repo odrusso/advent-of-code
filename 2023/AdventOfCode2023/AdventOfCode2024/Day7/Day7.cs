@@ -9,7 +9,7 @@ public class Day7 : AbstractDay
             $"/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day7/input.txt");
 
     // 2501605301465
-    protected override object ProcessPartOne(string[] input)
+    public override object ProcessPartOne(string[] input)
     {
         var parsedLines = ParseLines(input);
 
@@ -19,7 +19,7 @@ public class Day7 : AbstractDay
     }
 
     // 44841372855953
-    protected override object ProcessPartTwo(string[] input)
+    public override object ProcessPartTwo(string[] input)
     {
         var parsedLines = ParseLines(input);
 

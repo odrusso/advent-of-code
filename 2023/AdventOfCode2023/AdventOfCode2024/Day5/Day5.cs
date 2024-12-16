@@ -8,7 +8,7 @@ public class Day5 : AbstractDay
         File.ReadAllLines(
             $"/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day5/input.txt");
 
-    protected override object ProcessPartOne(string[] input)
+    public override object ProcessPartOne(string[] input)
     {
         var (ruleLines, updateLines) = ParseInput(input);
         var valueToAllLesser = BuildLesserMap(ruleLines);
@@ -18,7 +18,7 @@ public class Day5 : AbstractDay
 
     // 4366 TOO LOW!
     // 4603, still too low!
-    protected override object ProcessPartTwo(string[] input)
+    public override object ProcessPartTwo(string[] input)
     {
         var (ruleLines, updateLines) = ParseInput(input);
         var valueToAllLesser = BuildLesserMap(ruleLines);

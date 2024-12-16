@@ -11,7 +11,7 @@ public class Day10 : AbstractDay
         File.ReadAllLines(
             "/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day10/input.txt");
 
-    protected override object ProcessPartOne(string[] input)
+    public override object ProcessPartOne(string[] input)
     {
         _map = ParseInput(input);
 
@@ -59,7 +59,7 @@ public class Day10 : AbstractDay
         TraverseMapRecursive(next, y, x + 1); // Right
     }
 
-    protected override object ProcessPartTwo(string[] input)
+    public override object ProcessPartTwo(string[] input)
     {
         _map = ParseInput(input);
 

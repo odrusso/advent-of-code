@@ -27,7 +27,7 @@ public class Day14 : AbstractDay
         public int Dy { get; init; }
     };
 
-    protected override object ProcessPartOne(string[] input)
+    public override object ProcessPartOne(string[] input)
     {
         Robot[] robots = ParseInput(input);
         List<Robot> movedRobots = [];
@@ -40,7 +40,7 @@ public class Day14 : AbstractDay
         return DetermineScore(movedRobots.ToArray());
     }
 
-    protected override object ProcessPartTwo(string[] input)
+    public override object ProcessPartTwo(string[] input)
     {
         Robot[] robots = ParseInput(input);
 

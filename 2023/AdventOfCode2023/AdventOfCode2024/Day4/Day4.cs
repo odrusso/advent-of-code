@@ -36,7 +36,7 @@ public class Day4 : AbstractDay
 
     private static readonly Cardinal[] AllCardinals = [..SquareCardinals, ..AngleCardinals];
 
-    protected override object ProcessPartOne(string[] input)
+    public override object ProcessPartOne(string[] input)
     {
         char[][] matrix = input.Select(l => l.ToCharArray()).ToArray();
 
@@ -53,7 +53,7 @@ public class Day4 : AbstractDay
         return xmasCount;
     }
 
-    protected override object ProcessPartTwo(string[] input)
+    public override object ProcessPartTwo(string[] input)
     {
         char[][] matrix = input.Select(l => l.ToCharArray()).ToArray();
 

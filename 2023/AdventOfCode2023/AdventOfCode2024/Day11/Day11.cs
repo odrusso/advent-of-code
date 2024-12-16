@@ -11,9 +11,9 @@ public class Day11 : AbstractDay
         File.ReadAllLines(
             "/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day11/input.txt");
 
-    protected override object ProcessPartOne(string[] input) => StoneCount(input, 25);
+    public override object ProcessPartOne(string[] input) => StoneCount(input, 25);
 
-    protected override object ProcessPartTwo(string[] input) => StoneCount(input, 75);
+    public override object ProcessPartTwo(string[] input) => StoneCount(input, 75);
 
     private long StoneCount(string[] input, int blinks)
     {

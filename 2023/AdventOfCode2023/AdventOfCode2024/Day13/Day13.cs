@@ -10,7 +10,7 @@ public class Day13 : AbstractDay
         File.ReadAllLines(
             "/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day13/input.txt");
 
-    protected override object ProcessPartOne(string[] input)
+    public override object ProcessPartOne(string[] input)
     {
         long acc = 0;
 
@@ -24,7 +24,7 @@ public class Day13 : AbstractDay
         return acc;
     }
 
-    protected override object ProcessPartTwo(string[] input)
+    public override object ProcessPartTwo(string[] input)
     {
         long acc = 0;
 

@@ -9,7 +9,7 @@ public class Day8 : AbstractDay
         File.ReadAllLines(
             $"/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day8/input.txt");
 
-    protected override object ProcessPartOne(string[] input)
+    public override object ProcessPartOne(string[] input)
     {
         HashSet<Vector<int>> antinodes = [];
 
@@ -38,7 +38,7 @@ public class Day8 : AbstractDay
         return filteredAntinodes.Count();
     }
 
-    protected override object ProcessPartTwo(string[] input)
+    public override object ProcessPartTwo(string[] input)
     {
         HashSet<Vector<int>> antinodes = [];
 

@@ -5,7 +5,7 @@ namespace AdventOfCode2023.Day1;
 
 public class Day1 : AbstractDay
 {
-    protected override object ProcessPartOne(string[] input) =>
+    public override object ProcessPartOne(string[] input) =>
         input.Sum(line =>
         {
             var numbersInString = Regex.Matches(line, @"(\d)");
@@ -13,7 +13,7 @@ public class Day1 : AbstractDay
                    ValidTokens[numbersInString.Last().Value];
         });
 
-    protected override object ProcessPartTwo(string[] input) =>
+    public override object ProcessPartTwo(string[] input) =>
         input.Sum(line =>
         {
             var numbersInString = Regex.Matches(line, $"(?=({string.Join("|", ValidTokens.Keys)}))");

@@ -21,7 +21,7 @@ public class Day12 : AbstractDay
         File.ReadAllLines(
             "/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day12/input.txt");
 
-    protected override object ProcessPartOne(string[] input)
+    public override object ProcessPartOne(string[] input)
     {
         _map = input;
 
@@ -128,7 +128,7 @@ public class Day12 : AbstractDay
         return _map[y][x] == m;
     }
 
-    protected override object ProcessPartTwo(string[] input)
+    public override object ProcessPartTwo(string[] input)
     {
         _map = input;
 

@@ -7,7 +7,7 @@ public class Day1 : AbstractDay
     // 2192892 is right!
     protected override string[] GetLines() => File.ReadAllLines($"/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day1/input.txt");
 
-    protected override object ProcessPartOne(string[] input)
+    public override object ProcessPartOne(string[] input)
     {
         var (listOne, listTwo) = GetLists(input);
 
@@ -15,7 +15,7 @@ public class Day1 : AbstractDay
     }
 
     // 22962826 is right!
-    protected override object ProcessPartTwo(string[] input)
+    public override object ProcessPartTwo(string[] input)
     {
         var (listOne, listTwo) = GetLists(input);
 

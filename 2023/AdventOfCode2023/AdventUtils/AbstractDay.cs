@@ -7,9 +7,9 @@ public abstract class AbstractDay
 {
     protected abstract string[] GetLines();
 
-    protected abstract object ProcessPartOne(string[] input);
+    public abstract object ProcessPartOne(string[] input);
 
-    protected abstract object ProcessPartTwo(string[] input);
+    public abstract object ProcessPartTwo(string[] input);
 
     public void RunPartOne()
     {
