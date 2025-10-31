@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AdventOfCode2024.Day15;
@@ -5,11 +6,17 @@ namespace AdventOfCode2024.Day15;
 [TestClass]
 public class AboutDay15_PartOne
 {
+    private static string[] ReadInput(string filename, [CallerFilePath] string? filePath = null)
+    {
+        var directory = Path.GetDirectoryName(filePath);
+        var inputPath = Path.Combine(directory!, filename);
+        return File.ReadAllLines(inputPath);
+    }
+
     [TestMethod]
     public void TestMicro()
     {
-        var input = File.ReadAllLines(
-            "/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day15/input_micro.txt");
+        var input = ReadInput("input_micro.txt");
 
         var result = new Day15().ProcessPartOne(input);
         
@@ -19,8 +26,7 @@ public class AboutDay15_PartOne
     [TestMethod]
     public void TestSmall()
     {
-        var input = File.ReadAllLines(
-            "/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day15/input_small.txt");
+        var input = ReadInput("input_small.txt");
         
         var result = new Day15().ProcessPartOne(input);
         
@@ -31,8 +37,7 @@ public class AboutDay15_PartOne
     [TestMethod]
     public void TestFull()
     {
-        var input = File.ReadAllLines(
-            "/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day15/input.txt");
+        var input = ReadInput("input.txt");
         
         var result = new Day15().ProcessPartOne(input);
 
@@ -43,11 +48,17 @@ public class AboutDay15_PartOne
 [TestClass]
 public class AboutDay15_PartTwo
 {
+    private static string[] ReadInput(string filename, [CallerFilePath] string? filePath = null)
+    {
+        var directory = Path.GetDirectoryName(filePath);
+        var inputPath = Path.Combine(directory!, filename);
+        return File.ReadAllLines(inputPath);
+    }
+
     [TestMethod]
     public void TestMicro()
     {
-        var input = File.ReadAllLines(
-            "/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day15/input_micro.txt");
+        var input = ReadInput("input_micro.txt");
 
         var result = new Day15().ProcessPartTwo(input);
         
@@ -57,8 +68,7 @@ public class AboutDay15_PartTwo
     [TestMethod]
     public void TestSmall()
     {
-        var input = File.ReadAllLines(
-            "/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day15/input_small.txt");
+        var input = ReadInput("input_small.txt");
         
         var result = new Day15().ProcessPartTwo(input);
         
@@ -68,8 +78,7 @@ public class AboutDay15_PartTwo
     [TestMethod]
     public void TestFull()
     {
-        var input = File.ReadAllLines(
-            "/Users/oscar/Projects/advent-of-code/2023/AdventOfCode2023/AdventOfCode2024/Day15/input.txt");
+        var input = ReadInput("input.txt");
         
         var result = new Day15().ProcessPartTwo(input);
 
