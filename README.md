@@ -43,6 +43,6 @@ dotnet run --project src/AdventOfCode2024
 ## Development
 
 The solution uses:
-- .NET 10.0
+- .NET 9.0
 - BenchmarkDotNet for performance testing
 - MSTest for testing (AdventOfCode2024)
