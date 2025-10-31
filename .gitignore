@@ -5,3 +5,4 @@
 # .NET build artifacts
 **/bin/
 **/obj/
+BenchmarkDotNet.Artifacts/
