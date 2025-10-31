@@ -1,6 +1,0 @@
-/home/runner/work/advent-of-code/advent-of-code/2023/AdventOfCode2023/AdventOfCode2023/obj/Debug/net9.0/AdventOfCode2023.csproj.AssemblyReference.cache
-/home/runner/work/advent-of-code/advent-of-code/2023/AdventOfCode2023/AdventOfCode2023/obj/Debug/net9.0/AdventOfCode2023.GeneratedMSBuildEditorConfig.editorconfig
-/home/runner/work/advent-of-code/advent-of-code/2023/AdventOfCode2023/AdventOfCode2023/obj/Debug/net9.0/AdventOfCode2023.AssemblyInfoInputs.cache
-/home/runner/work/advent-of-code/advent-of-code/2023/AdventOfCode2023/AdventOfCode2023/obj/Debug/net9.0/AdventOfCode2023.AssemblyInfo.cs
-/home/runner/work/advent-of-code/advent-of-code/2023/AdventOfCode2023/AdventOfCode2023/obj/Debug/net9.0/AdventOfCode2023.csproj.CoreCompileInputs.cache
-/home/runner/work/advent-of-code/advent-of-code/2023/AdventOfCode2023/AdventOfCode2023/obj/Debug/net9.0/AdventOfCode2023.sourcelink.json
