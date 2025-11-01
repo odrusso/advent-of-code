@@ -6,3 +6,5 @@
 **/bin/
 **/obj/
 BenchmarkDotNet.Artifacts/
+**/*DotSettings*
+**/global.json
