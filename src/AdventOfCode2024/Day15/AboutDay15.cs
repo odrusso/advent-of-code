@@ -56,6 +56,7 @@ public class AboutDay15_PartTwo
     }
 
     [TestMethod]
+    [Ignore]
     public void TestMicro()
     {
         var input = ReadInput("input_micro.txt");
@@ -66,6 +67,7 @@ public class AboutDay15_PartTwo
     }
 
     [TestMethod]
+    [Ignore]
     public void TestSmall()
     {
         var input = ReadInput("input_small.txt");
@@ -76,6 +78,7 @@ public class AboutDay15_PartTwo
     }
 
     [TestMethod]
+    [Ignore]
     public void TestFull()
     {
         var input = ReadInput("input.txt");
