@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   build-and-test:
@@ -29,4 +30,116 @@ jobs:
       run: dotnet build --no-restore --configuration Release
     
     - name: Test
-      run: dotnet test --no-build --configuration Release --verbosity normal
+      run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
+      continue-on-error: true
+    
+    - name: Parse and Post Test Results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          // Find the TRX file
+          const testResultsDir = './TestResults';
+          if (!fs.existsSync(testResultsDir)) {
+            console.log('No TestResults directory found');
+            return;
+          }
+          
+          const files = fs.readdirSync(testResultsDir);
+          const trxFile = files.find(f => f.endsWith('.trx'));
+          
+          if (!trxFile) {
+            console.log('No TRX file found');
+            return;
+          }
+          
+          const trxPath = path.join(testResultsDir, trxFile);
+          const trxContent = fs.readFileSync(trxPath, 'utf8');
+          
+          // Parse TRX XML using regex
+          const getTotalTests = (content) => {
+            const match = content.match(/total="(\d+)"/);
+            return match ? match[1] : '0';
+          };
+          
+          const getPassed = (content) => {
+            const match = content.match(/passed="(\d+)"/);
+            return match ? match[1] : '0';
+          };
+          
+          const getFailed = (content) => {
+            const match = content.match(/failed="(\d+)"/);
+            return match ? match[1] : '0';
+          };
+          
+          const getSkipped = (content) => {
+            const match = content.match(/skipped="(\d+)"/);
+            return match ? match[1] : '0';
+          };
+          
+          // Extract test results
+          const testMatches = trxContent.matchAll(/<UnitTestResult[^>]*testName="([^"]+)"[^>]*outcome="([^"]+)"[^>]*duration="([^"]+)"[^>]*>/g);
+          const tests = Array.from(testMatches).map(m => ({
+            name: m[1],
+            outcome: m[2],
+            duration: parseFloat(m[3])
+          }));
+          
+          // Extract error messages
+          const errorMatches = trxContent.matchAll(/<UnitTestResult[^>]*testName="([^"]+)"[^>]*outcome="Failed"[^>]*>[\s\S]*?<Message>([\s\S]*?)<\/Message>/g);
+          const errors = {};
+          for (const m of errorMatches) {
+            errors[m[1]] = m[2].substring(0, 200);
+          }
+          
+          // Build comment
+          let comment = '## 🧪 Test Results\n\n';
+          const total = getTotalTests(trxContent);
+          const passed = getPassed(trxContent);
+          const failed = getFailed(trxContent);
+          const skipped = getSkipped(trxContent);
+          
+          comment += `**Total:** ${total} | **Passed:** ${passed} ✅ | **Failed:** ${failed} ❌ | **Skipped:** ${skipped} ⏭️\n\n`;
+          
+          // List failed tests
+          const failedTests = tests.filter(t => t.outcome === 'Failed');
+          if (failedTests.length > 0) {
+            comment += '### ❌ Failed Tests\n\n';
+            failedTests.forEach(test => {
+              comment += `- **${test.name}** (${test.duration.toFixed(3)}s)\n`;
+              if (errors[test.name]) {
+                comment += `  > ${errors[test.name]}...\n\n`;
+              }
+            });
+          }
+          
+          // List slowest tests
+          const passedTests = tests.filter(t => t.outcome === 'Passed');
+          if (passedTests.length > 0) {
+            const sorted = passedTests
+              .sort((a, b) => b.duration - a.duration)
+              .slice(0, 10);
+            
+            comment += '### ⏱️ Top 10 Slowest Tests\n\n';
+            sorted.forEach(test => {
+              comment += `- ${test.name}: **${test.duration.toFixed(3)}s**\n`;
+            });
+          }
+          
+          // Post comment
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+    
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: TestResults/
