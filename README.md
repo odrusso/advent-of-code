@@ -12,6 +12,7 @@ The .NET projects follow a standard structure:
 - **`src/AdventUtils/`** - Shared utility library with base classes for Advent of Code challenges
 - **`src/AdventOfCode2023/`** - C# solutions for Advent of Code 2023
 - **`src/AdventOfCode2024/`** - C# solutions for Advent of Code 2024
+- **`src/AdventOfCode2025/`** - C# solutions for Advent of Code 2025
 
 Each Day solution inherits from `AbstractDay` and implements:
 - `ProcessPartOne(string[] input)` - Solution for part 1
@@ -37,7 +38,7 @@ dotnet build
 To run a specific year:
 
 ```bash
-dotnet run --project src/AdventOfCode2024
+dotnet run --project src/AdventOfCode2025
 ```
 
 ## Development
