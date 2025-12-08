@@ -60,7 +60,7 @@ public class Day8 : AbstractDay
         // var tree = BuildTree(points);
 
         KNodeDistanceMap distanceMap = new KNodeDistanceMap(connectionCount);
-        
+
         for (var leftIndex = 0; leftIndex < points.Length - 1; leftIndex++)
         {
             var leftPoint = points[leftIndex];
@@ -68,12 +68,12 @@ public class Day8 : AbstractDay
             for (var rightIndex = leftIndex + 1; rightIndex < points.Length; rightIndex++)
             {
                 var rightPoint = points[rightIndex];
-                
+
                 // Might not need this check anymore tbh
                 if (leftPoint == rightPoint) continue;
 
                 var distance = leftPoint.SquareDistance(rightPoint);
-                
+
                 distanceMap.Add(distance, leftPoint, rightPoint);
             }
         }
@@ -92,19 +92,22 @@ public class Day8 : AbstractDay
             {
                 // No existing connections
                 circuits.Add([connection.left, connection.right]);
-            } else if (leftExistingIndex != -1 && rightExistingIndex == -1)
+            }
+            else if (leftExistingIndex != -1 && rightExistingIndex == -1)
             {
                 // Left in a circuit, right isn't, just add right
                 circuits[leftExistingIndex].Add(connection.right);
-            } else if (leftExistingIndex == -1 && rightExistingIndex != -1)
+            }
+            else if (leftExistingIndex == -1 && rightExistingIndex != -1)
             {
                 // Right in a circuit, left isn't, just add left
                 circuits[rightExistingIndex].Add(connection.left);
-            } else if (leftExistingIndex != -1 && rightExistingIndex != -1)
+            }
+            else if (leftExistingIndex != -1 && rightExistingIndex != -1)
             {
                 // Don't do anything if they're already together
                 if (leftExistingIndex == rightExistingIndex) continue;
-        
+
                 // Both are in different circuits, join them together (to the left)
                 circuits[leftExistingIndex].AddRange(circuits[rightExistingIndex]);
                 circuits.RemoveAt(rightExistingIndex);
@@ -119,7 +122,78 @@ public class Day8 : AbstractDay
 
     public override object ProcessPartTwo(string[] input)
     {
-        return 0L;
+        var connectionCount = int.Parse(input[0]);
+
+        var points = ParseInput(input[1..]);
+
+        // Build a KD-Tree, dim = 3.
+        // var tree = BuildTree(points);
+
+        // Going big because I don't know what this should be. 10 works for both micro and full sets. Shrug.
+        var maxConnectionCount = input.Length * 10;
+
+        KNodeDistanceMap distanceMap = new KNodeDistanceMap(maxConnectionCount);
+
+        for (var leftIndex = 0; leftIndex < points.Length - 1; leftIndex++)
+        {
+            var leftPoint = points[leftIndex];
+
+            for (var rightIndex = leftIndex + 1; rightIndex < points.Length; rightIndex++)
+            {
+                var rightPoint = points[rightIndex];
+
+                // Might not need this check anymore tbh
+                if (leftPoint == rightPoint) continue;
+
+                var distance = leftPoint.SquareDistance(rightPoint);
+
+                distanceMap.Add(distance, leftPoint, rightPoint);
+            }
+        }
+
+        var connectionsToMake = distanceMap.GetSorted();
+
+        List<List<Point>> circuits = [];
+
+        foreach (var connection in connectionsToMake)
+        {
+            // See if either of the points in this connection are already in a circuit
+            var leftExistingIndex = circuits.FindIndex(c => c.Contains(connection.left));
+            var rightExistingIndex = circuits.FindIndex(c => c.Contains(connection.right));
+
+            if (leftExistingIndex == -1 && rightExistingIndex == -1)
+            {
+                // No existing connections
+                circuits.Add([connection.left, connection.right]);
+            }
+            else if (leftExistingIndex != -1 && rightExistingIndex == -1)
+            {
+                // Left in a circuit, right isn't, just add right
+                circuits[leftExistingIndex].Add(connection.right);
+            }
+            else if (leftExistingIndex == -1 && rightExistingIndex != -1)
+            {
+                // Right in a circuit, left isn't, just add left
+                circuits[rightExistingIndex].Add(connection.left);
+            }
+            else if (leftExistingIndex != -1 && rightExistingIndex != -1)
+            {
+                // Don't do anything if they're already together
+                if (leftExistingIndex != rightExistingIndex)
+                {
+                    // Both are in different circuits, join them together (to the left)
+                    circuits[leftExistingIndex].AddRange(circuits[rightExistingIndex]);
+                    circuits.RemoveAt(rightExistingIndex);
+                }
+            }
+
+            if (circuits.Count == 1 && circuits.First().Count == points.Length)
+            {
+                return connection.left.X * connection.right.X;
+            }
+        }
+
+        return -1;
     }
 
     private static Point[] ParseInput(string[] input) =>
@@ -149,8 +223,8 @@ public class Day8 : AbstractDay
         Point[] pointsBeforeMedian = points.Where(p => axis(p) < axis(medianPoint)).ToArray();
 
         return new Node(
-            medianPoint, 
-            BuildTree(pointsBeforeMedian, depth + 1), 
+            medianPoint,
+            BuildTree(pointsBeforeMedian, depth + 1),
             BuildTree(pointsAfterMedian, depth + 1));
     }
 
@@ -169,6 +243,7 @@ public class Day8 : AbstractDay
         // Even number of points, we need to take the average of the two points
         var lowPoint = orderedPoints[middlePoint - 1];
         var highPoint = orderedPoints[middlePoint];
-        return new Point((lowPoint.X + highPoint.X) / 2, (lowPoint.Y + highPoint.Y) / 2, (lowPoint.Z + highPoint.Z) / 2);
+        return new Point((lowPoint.X + highPoint.X) / 2, (lowPoint.Y + highPoint.Y) / 2,
+            (lowPoint.Z + highPoint.Z) / 2);
     }
 }
