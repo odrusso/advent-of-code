@@ -30,7 +30,7 @@ public class AboutDay8
 
         var result = new Day8().ProcessPartOne(input);
 
-        Assert.AreEqual(0L, result);
+        Assert.AreEqual(57564, result);
     }
 
     [TestMethod]
@@ -40,7 +40,7 @@ public class AboutDay8
 
         var result = new Day8().ProcessPartTwo(input);
 
-        Assert.AreEqual(0L, result);
+        Assert.AreEqual(25272L, result);
     }
 
     [TestMethod]
