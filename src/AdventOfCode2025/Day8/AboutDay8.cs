@@ -50,6 +50,6 @@ public class AboutDay8
 
         var result = new Day8().ProcessPartTwo(input);
 
-        Assert.AreEqual(0L, result);
+        Assert.AreEqual(133296744L, result);
     }
 }

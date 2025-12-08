@@ -14,8 +14,6 @@ public class Day8 : AbstractDay
         }
     }
 
-    private record Node(Point Position, Node? LeftChild, Node? RightChild);
-
     private class KNodeDistanceMap(int k)
     {
         // TODO, we can probably do this easier if we just keep the list sorted
@@ -35,10 +33,10 @@ public class Day8 : AbstractDay
             if (distance >= _maximumDistance) return;
 
             // We have something shorter, so we need to bump the current max
-            var indexToRemove = _map.FindIndex(b => b.distance == _maximumDistance);
+            var indexToRemove = _map.FindIndex(d => d.distance == _maximumDistance);
             _map.RemoveAt(indexToRemove);
             _map.Add((distance, a, b));
-            _maximumDistance = _map.Select(a => a.distance).Max();
+            _maximumDistance = _map.Select(c => c.distance).Max();
         }
 
         public (Point left, Point right)[] GetSorted()
@@ -55,9 +53,6 @@ public class Day8 : AbstractDay
         var connectionCount = int.Parse(input[0]);
 
         var points = ParseInput(input[1..]);
-
-        // Build a KD-Tree, dim = 3.
-        // var tree = BuildTree(points);
 
         KNodeDistanceMap distanceMap = new KNodeDistanceMap(connectionCount);
 
@@ -122,12 +117,7 @@ public class Day8 : AbstractDay
 
     public override object ProcessPartTwo(string[] input)
     {
-        var connectionCount = int.Parse(input[0]);
-
         var points = ParseInput(input[1..]);
-
-        // Build a KD-Tree, dim = 3.
-        // var tree = BuildTree(points);
 
         // Going big because I don't know what this should be. 10 works for both micro and full sets. Shrug.
         var maxConnectionCount = input.Length * 10;
@@ -203,47 +193,4 @@ public class Day8 : AbstractDay
                 var pointsArr = pointsString.Split(",").Select(long.Parse).ToArray();
                 return new Point(pointsArr[0], pointsArr[1], pointsArr[2]);
             }).ToArray();
-
-    private static Node? BuildTree(Point[] points, int depth = 0)
-    {
-        if (points.Length == 0) return null;
-
-        if (points.Length == 1) return new Node(points[0], null, null);
-
-        Func<Point, long> axis = (depth % 3) switch
-        {
-            0 => p => p.X,
-            1 => p => p.Y,
-            2 => p => p.Z
-        };
-
-        Point medianPoint = Median(points, axis);
-
-        Point[] pointsAfterMedian = points.Where(p => axis(p) >= axis(medianPoint)).ToArray();
-        Point[] pointsBeforeMedian = points.Where(p => axis(p) < axis(medianPoint)).ToArray();
-
-        return new Node(
-            medianPoint,
-            BuildTree(pointsBeforeMedian, depth + 1),
-            BuildTree(pointsAfterMedian, depth + 1));
-    }
-
-    private static Point Median(Point[] points, Func<Point, long> order)
-    {
-        var orderedPoints = points.OrderBy(order).ToList();
-
-        int middlePoint = orderedPoints.Count / 2;
-
-        if (orderedPoints.Count % 2 != 0)
-        {
-            // Odd number of points, we can grab the middle one
-            return orderedPoints[middlePoint];
-        }
-
-        // Even number of points, we need to take the average of the two points
-        var lowPoint = orderedPoints[middlePoint - 1];
-        var highPoint = orderedPoints[middlePoint];
-        return new Point((lowPoint.X + highPoint.X) / 2, (lowPoint.Y + highPoint.Y) / 2,
-            (lowPoint.Z + highPoint.Z) / 2);
-    }
 }
