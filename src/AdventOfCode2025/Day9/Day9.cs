@@ -130,12 +130,36 @@ public class Day9 : AbstractDay
                  * . X X X X X .
                  * . . . . . . .
                  */
+                
+                // sus points
+                // 1602,50408
+                // 94582,50408
+                // 94582,48356
+                // 2384,48356
+                
+                // Either point needs to lie on Y = 50408 or y = 48356, and we can probably skip the enclosed check?
+                // If it's Y = 50408, the other Y needs to be higher
+                // otherwise lower
+                
+                // In upper hemisphere
+                bool a = leftPoint.Y == 50408 && rightPoint.Y > 50408;
+                bool b = rightPoint.Y == 50408 && leftPoint.Y > 50408;
+                bool c = leftPoint.Y == 48356 && rightPoint.Y < 48356;
+                bool d = rightPoint.Y == 48356 && leftPoint.Y < 48356;
 
-                if (size <= maxSquareSize) continue;
+                if (a || b || c || d)
+                {
+                    if (size <= maxSquareSize) continue;
+                    
+                    // if (size == 3043059360) continue;
+                    // if (size == 3032146062) continue;
+                    // if (size == 3031254296) continue;
+                    // 3032146062
 
-                if (!Enclosed(points, leftPoint, rightPoint)) continue;
+                    // if (!Enclosed(points, leftPoint, rightPoint)) continue;
 
-                maxSquareSize = size;
+                    maxSquareSize = size;
+                }
             }
         }
 
