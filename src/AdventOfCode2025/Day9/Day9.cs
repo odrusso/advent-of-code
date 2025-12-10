@@ -114,13 +114,22 @@ public class Day9 : AbstractDay
 
                 var size = leftPoint.SquareSize(rightPoint);
 
-                // if (size < 1000000000L) continue;
-
-                //          230259758L
-                // if (size < 1500000000L) continue;
+                // if (size < 2000000000L) continue;
+                // if (size > 2100000000L) continue;
                 // if (size > 1000L) continue;
 
                 // maxSquareSize++;
+    
+                /*
+                 * . . . . . . .
+                 * . X X X X X .
+                 * . X . . . X .
+                 * . X X . . X .
+                 * . X X . . X .
+                 * . X . . . X .
+                 * . X X X X X .
+                 * . . . . . . .
+                 */
 
                 if (size <= maxSquareSize) continue;
 
@@ -135,43 +144,44 @@ public class Day9 : AbstractDay
 
     private static bool Enclosed(Point[] points, Point leftPoint, Point rightPoint)
     {
-        // Top-line check. Horiz ray from top-left
-        if (NewEdgeDetect(points, Math.Min(leftPoint.X, rightPoint.X), Math.Min(leftPoint.Y, rightPoint.Y), horizontalRay: true)) return false;
+        // x1y1 -> x2y1 or top-line check and
+        // x1y2 -> x2y2 or bottom-line check
+        for (long x = Math.Min(leftPoint.X, rightPoint.X); x < Math.Max(leftPoint.X, rightPoint.X) - 1; x++)
+        {
+            if (PointOutsideCheck(
+                    points,
+                    x: x,
+                    y: Math.Min(leftPoint.Y, rightPoint.Y),
+                    horizontalRay: true)) return false;
 
-        // Bottom-line check. Horiz ray from bottom-left
-        if (NewEdgeDetect(points, Math.Min(leftPoint.X, rightPoint.X), Math.Max(leftPoint.Y, rightPoint.Y) - 1, horizontalRay: true)) return false;
-
-        // Left-line check. Vert ray from top-left
-        if (NewEdgeDetect(points, Math.Min(leftPoint.X, rightPoint.X), Math.Min(leftPoint.Y, rightPoint.Y), horizontalRay: false)) return false;
-
-        // Right-line check. Vert ray from top-right
-        if (NewEdgeDetect(points, Math.Max(leftPoint.X, rightPoint.X) - 1, Math.Min(leftPoint.Y, rightPoint.Y), horizontalRay: false)) return false;
-
-        // x1y2 -> x1y1 or left-line check
-        // for (long y = Math.Min(leftPoint.Y, rightPoint.Y); y < Math.Max(leftPoint.Y, rightPoint.Y - 1); y++)
-        // {
-        //     if (EdgeDetect(points, Math.Min(leftPoint.X, rightPoint.X), y)) return false;
-        //     if (EdgeDetect(points, Math.Max(leftPoint.X, rightPoint.X) - 1, y)) return false;
-        // }
-
-        // for (long x = Math.Min(leftPoint.X, rightPoint.X); x < Math.Max(leftPoint.X, rightPoint.X - 1); x++)
-        // {
-        //     if (EdgeDetect(points, x, Math.Min(leftPoint.Y, rightPoint.Y))) return false;
-        //     if (EdgeDetect(points, x, Math.Max(leftPoint.Y, rightPoint.Y) - 1)) return false;
-        // }
+            if (PointOutsideCheck(
+                points,
+                x: x,
+                y: Math.Max(leftPoint.Y, rightPoint.Y) - 1,
+                horizontalRay: true)) return false;
+        }
 
         // x2y1 -> x2y2 or right-line check and
         // x1y2 -> x1y1 or left-line check
-        // for (long y = Math.Min(leftPoint.Y, rightPoint.Y); y < Math.Max(leftPoint.Y, rightPoint.Y - 1); y++)
-        // {
-        //     if (EdgeDetect(points, Math.Min(leftPoint.X, rightPoint.X), y)) return false;
-        //     if (EdgeDetect(points, Math.Max(leftPoint.X, rightPoint.X) - 1, y)) return false;
-        // }
+        for (long y = Math.Min(leftPoint.Y, rightPoint.Y); y < Math.Max(leftPoint.Y, rightPoint.Y) - 1; y++)
+        {
+            if (PointOutsideCheck(
+                points,
+                x: Math.Min(leftPoint.X, rightPoint.X),
+                y: y,
+                horizontalRay: false)) return false;
+
+            if (PointOutsideCheck(
+                points,
+                x: Math.Max(leftPoint.X, rightPoint.X) - 1,
+                y: y,
+                horizontalRay: false)) return false;
+        }
 
         return true;
     }
 
-    private static bool NewEdgeDetect(Point[] points, long x, long y, bool horizontalRay)
+    private static bool PointOutsideCheck(Point[] points, long x, long y, bool horizontalRay)
     {
         var intersections = 0;
 
@@ -192,52 +202,25 @@ public class Day9 : AbstractDay
             {
                 var segmentLowY = Math.Min(thisPoint.Y, nextPoint.Y);
                 var segmentHighY = Math.Max(thisPoint.Y, nextPoint.Y);
+                var segmentLowX = Math.Min(thisPoint.X, nextPoint.X);
 
                 // hx1 <= vx <= hx2 (intersection point's x is within horizontal segment)
                 // vy1 <= hy <= vy2 (intersection point's y is within vertical segment)
-                if ((testX <= thisPoint.X) && (segmentLowY <= testY) && (testY <= segmentHighY)) intersections++;
+                if ((testX <= segmentLowX) && (segmentLowY <= testY) && (testY <= segmentHighY)) intersections++;
             }
             else // Vertical ray
             {
                 var segmentLowX = Math.Min(thisPoint.X, nextPoint.X);
                 var segmentHighX = Math.Max(thisPoint.X, nextPoint.X);
+                var segmentLowY = Math.Min(thisPoint.Y, nextPoint.Y);
 
                 // hx1 <= vx <= hx2 (intersection point's x is within horizontal segment)
                 // vy1 <= hy <= vy2 (intersection point's y is within vertical segment)
-                if ((segmentLowX <= testX) && (testX <= segmentHighX) && (testY <= thisPoint.Y)) intersections++;
+                if ((segmentLowX <= testX) && (testX <= segmentHighX) && (testY <= segmentLowY)) intersections++;
             }
         }
 
-        return intersections % 2 != 0;
-    }
-
-    private static bool EdgeDetect(Point[] points, long x, long y)
-    {
-        var testX = x + 0.5;
-        var testY = y + 0.5;
-
-        var intersections = 0;
-
-        for (int i = 0; i < points.Length; i++)
-        {
-            // These two points define a line segment. 
-            var thisPoint = points[i];
-            var nextPoint = points[(i + 1) % points.Length]; // For wrapping
-
-            // We can safely ignore horizontal line segments, yay! Or christ I hope we can.
-            // Probably need to TODO this harder...
-            if (thisPoint.Y == nextPoint.Y) continue;
-
-            var pointLowY = Math.Min(thisPoint.Y, nextPoint.Y);
-            var pointHighY = Math.Max(thisPoint.Y, nextPoint.Y);
-
-            // hx1 <= vx <= hx2 (intersection point's x is within horizontal segment)
-            // vy1 <= hy <= vy2 (intersection point's y is within vertical segment)
-            // man I hope this is right...
-            if ((testX <= thisPoint.X) && (pointLowY <= testY) && (testY <= pointHighY)) intersections++;
-        }
-
-        return intersections % 2 != 0;
+        return intersections % 2 == 0;
     }
 
     private static Point[] ParseInput(string[] input) =>
